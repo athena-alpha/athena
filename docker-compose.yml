@@ -1,0 +1,42 @@
+x-volumes:
+  &data-volume # Uncomment *ONE* of the appropriate lines for your platform
+    - data:/data                                        # Use this for Docker on Linux, Windows, etc.
+    # - /volume1/docker/Athena:/data                    # Use this for Synology NAS or ASUSTOR Docker Center
+    # - /share/CACHEDEV1_DATA/Container/Athena:/data    # Use this for QNAP Container Station (replace CACHEDEV1_DATA with your volume)
+    # - ./athena-data:/data                             # Use this for Portainer or Dockge
+    # - /mnt/PoolName/Docker/Athena:/data               # Use this for TrueNAS SCALE (replace PoolName with your pool, e.g., tank)
+
+services:
+  client: # Front end user interface
+    image: athenaalpha/athena-client:latest
+    container_name: athena-client
+    restart: unless-stopped
+
+  server: # Back end RESTful API
+    image: athenaalpha/athena-server:latest
+    container_name: athena-server
+    restart: unless-stopped
+    volumes: *data-volume
+
+  db: # Database for application and users data
+    image: mariadb:latest
+    container_name: athena-db
+    restart: unless-stopped
+    volumes: *data-volume
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: YES
+    command: ["--datadir=/data/db", "--init-file=/data/config/db/init/merged.sql"]
+
+  nginx: # Proxies traffic for Client and Server
+    image: nginx:latest
+    container_name: athena-nginx
+    restart: unless-stopped
+    volumes: *data-volume
+    depends_on:
+      - server
+    ports:
+      - "443:443"
+    command: ["nginx", "-c", "/data/config/nginx/nginx.conf", "-g", "daemon off;"]
+
+volumes:
+  data:
