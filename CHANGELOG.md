@@ -22,14 +22,14 @@ All notable changes to this project will be documented in this file. The format 
 - Removed AI Prompt Suggestions, this is now fully manged by the AI and reduces code overhead.
 
 ### Security
-- Updated i18next to version 25.6.0.
-- Updated react-i18next to version 16.1.4.
-- Updated node to version 25.0.0.
-- Updated @mui/x-data-grid to version 8.14.1.
-- Updated @mui/x-date-pickers to version 8.14.1.
-- Updated react-router-dom to version 7.9.4
-- Updated node to version 24.10.0
-- Updated laravel/serializable-closure to version 2.0.6
+- Updated `i18next` to version 25.6.0
+- Updated `react-i18next` to version 16.1.4
+- Updated `node` to version 25.0.0
+- Updated `@mui/x-data-grid` to version 8.14.1
+- Updated `@mui/x-date-pickers` to version 8.14.1
+- Updated `react-router-dom` to version 7.9.4
+- Updated `node` to version 24.10.0
+- Updated `laravel/serializable-closure` to version 2.0.6
 
 ## [v1.0.0] - 2025.10.04
 
