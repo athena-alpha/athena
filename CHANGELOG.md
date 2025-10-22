@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [v1.1.0] - 2025.10.22
 
-> This release introduces new core upgrade capabilities, AI Personas, security updates and a more refined code base.
+> This release introduces new core upgrade capabilities, AI Personas and security updates.
 
 ### New Features
 - **AI Persona**: AI Identity has been replaced with AI Personas. Personas align with typical job titles (eg Accountant) and are lightweight system prompts defining the AI role and behavior, they set expertise, tone, and boundaries. This change was made to better align with industry standards and several hundred new AI Personas have been added spanning many industries and job titles.
