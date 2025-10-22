@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Athena</h1>
 
-<img src="docs/images/readme/settings-profile.webp" width="800"><br />
+<img src="docs/images/readme/hero.webp" width="800"><br />
 
 > Your personal life manager, built with privacy, choice and beauty at its heart.
 
@@ -20,27 +20,11 @@ A platform that's completely divorced from big tech, their constant privacy-inva
 - **Beauty:** Free, open source, local and privacy focused software should be just as beautiful, modern and seamless as the latest big tech app. Athena is built using the latest software stacks with an eye for detail and user experience, because your data should be beautiful, powerful and fast
 
 ## Features
-> Beautiful, modern and fast Material UI design, because your data shouldn't be ugly
-
-<img src="docs/images/readme/settings-profile.webp" width="800"><br />
-
-> State of the art AI chat interface with buttons for quickly adding personal data
-
-<img src="docs/images/readme/ai-chat-interface.webp" width="800"><br />
-
-> Support for local and cloud based AI providers, plus a variety of identity and output options
-
-<img src="docs/images/readme/settings-ai.webp" width="800"><br />
-
-> Customizable theme colors, light and dark modes, multiple languages and more
-
-<img src="docs/images/readme/settings-preferences.webp" width="800"><br />
-
-> Built from the ground up to be fully self hosted to ensure complete security, privacy and control
-
-<img src="docs/images/readme/settings-security.webp" width="800"><br />
-
-**But wait, there's more!**
+- Beautiful, modern and fast Material UI design, because your data shouldn't be ugly
+- State of the art AI chat interface with buttons for quickly adding personal data
+- Support for local and cloud based AI providers, plus hundreds of AI personas
+- Customizable theme colors, light and dark modes, multiple languages and more
+- Built from the ground up to be fully self hosted to ensure complete security, privacy and control
 - Full Admin Panel area to manage users, application software & settings, audit and system logs
 - Fully responsive design built for mobile, tablet and desktop
 - Hyper focussed on security and privacy with dozens and dozens of industry standard [security features](docs/security.md)
