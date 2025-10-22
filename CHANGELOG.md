@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 > This release introduces new core upgrade capabilities, AI Personas, security updates and a more refined code base.
 
 ### New Features
-- **AI Persona**: AI Identity has been replaced with AI Personas. Personas align with typical job titles (eg Accountant) and are lightweight system prompts defining the AI role and behavior, they set expertise, tone, and boundaries. This change was made to better align with industry standards and also integrate with the new AI Tasks. Several hundred new AI Personas have been added spanning many industries and job titles.
+- **AI Persona**: AI Identity has been replaced with AI Personas. Personas align with typical job titles (eg Accountant) and are lightweight system prompts defining the AI role and behavior, they set expertise, tone, and boundaries. This change was made to better align with industry standards and several hundred new AI Personas have been added spanning many industries and job titles.
 - Added Server Version class for single source of truth code and API version.
 - Added Database migrations folder to enable upgrading of the database when new versions are deployed.
 - Added Client `AllowSignUpsSwitch` component under Settings -> Admin Panel -> Application Settings to allow admins to enable or disable site wide sign ups.
