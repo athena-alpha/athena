@@ -13,8 +13,8 @@ All notable changes to this project will be documented in this file. The format 
 - Added Client `AllowSignUpsSwitch` component under Settings -> Admin Panel -> Application Settings to allow admins to enable or disable site wide sign ups.
 
 ### Changed
-- Changed Server entrypoint script to a modular design for improved maintainability and readability.
-- Changed Server entrypoint script to now support upgrading of the database when new versions are deployed.
+- Changed Server entry point script to a modular design for improved maintainability and readability.
+- Changed Server entry point script to now support upgrading of the database when new versions are deployed.
 
 ### Removed
 - Removed AI Prompts, this is now fully manged by the AI and reduces code overhead.
