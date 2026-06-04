@@ -2,6 +2,108 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.0] - 2026.06.05
+
+> Launch of **Athena Finance**! (Note: Athena Finance **does not** support automated bank syncing)
+
+### Headline New Features
+- **Athena Finance:** The official release of Athena Finance, an incredibly private and secure personal finance vault. Track and manage your complete financial life locally with a beautiful, modern and fast user interface. Includes full multi-currency support across accounts, assets, liabilities, portfolios, categories, market data, and powerful insights
+- **Dashboard & Accounts:** A comprehensive overview of your entire financial position combined with full lifecycle management of Checking, Savings, Investment, Credit Card, Loan, Retirement and other account types
+- **Real-Time Market Data & Exchange Rates:** Integrated real-time and historical data for 50,000+ instruments (stocks, ETFs, mutual funds, cryptocurrencies, bonds, commodities, etc.) across 100+ global exchanges powered by Yahoo Finance
+- **Multi-Currency Support:** Automatic conversion at account, asset, and transaction levels, plus 20 new display currencies (AED, CLP, COP, CZK, DKK, EGP, HUF, IDR, ILS, KES, MYR, PHP, PLN, RON, SAR, THB, TWD, UAH, VND, ZAR), taking the total supported to 40 for even broader global coverage.
+- **Bulk CSV Transaction Import:** Quickly and easily import tens of thousands of transactions from existing financial institutions using standard banking CSV files. The new import wizard is as powerful as it is beautiful, enabling you to pause and resume imports, precisely configure columns, bulk map categories, easily mark transfer transactions to/from other accounts, auto detect and exclude duplicates and perform a full import roll back in case you make a mistake.
+- **AI Chat Streaming:** Enjoy real-time AI chat responses for a smoother, more interactive experience.
+
+### All New Features
+- Client: Added new `UserData` component under the new Settings -> Data & Privacy area that enables you to view, download and delete all your data with ease.
+- Client: Added `TimePeriodPicker` component to Settings -> Preferences -> Appearance that sets the default time period used for charts (e.g., 1D, 1M, 1Y etc).
+- Client: Added `DateFormatPicker` and `TimeFormatPicker` components to Settings -> Preferences -> Localization to allow the user to set their own custom date and time formats application wide.
+- Client: Added many new components to support the new Finance -> Accounts, Assets, Categories, Market Data, Symbols and Transaction features.
+- Client: Added new components to enable a centralized and standard way of displaying monetary amounts and financial returns application wide. This also includes a conversion tooltip that appears when the currency doesn't match the users display currency, giving exchange rate, date and source information.
+- Client: Added `StackedBarChart` component to display 100% stacked bar charts system wide with support for dynamic data, titles, icons, data formating and display options.
+- Client: Added `BaseLineChart` component to display beautiful and adaptive line charts system wide with support for dynamic data and Y-axis auto adjusting options.
+- Client: Added Tooltips to all `IconButton` components.
+- Client: Added localization support to `formatFileSize`.
+- Client: Added localization support to MUI Data Grids.
+- Client: Added a new `useResponsive` hook to enable centralized mobile and desktop detection.
+- Client: Added many new Account, Asset, Asset Lot, Asset Lot Disposition, Asset Value History, Cash Flow, Category, Market Data, Portfolio, Symbol and Transaction hooks to support new Finance features.
+- Client: Added many new AI Conversation, Message and Provider hooks and migrated all AI Chat code to use them for improved performance and code maintainability.
+- Client: Added `formatCurrency` function that supports displaying Bitcoin, being passed strings for enhanced precision and being given an override currency.
+- Client: Added `setPageTitle` utility function and migrated all `<title>` code to ensure centralized and consistent site wide page titles.
+- Server: Added many new `/finance/*` API endpoints to support new Finance features.
+- Server: Added many new background task scripts to automatically perform nightly tasks such as preloading and updating exchange rates, market data as well as to reconcile user accounts and assets.
+- Server: Added country and currency validation logic to `UserSettingService::update`
+- Database: Added many new `finance_*` tables to support new Finance features.
+
+### Changed
+- Client: A full rework of all translations to align with industry standard [Locize](https://www.locize.com/blog/guide-to-i18n-key-naming) and [ICU Message Format](https://icu.unicode.org/home). This not only enables a better foundation to add more languages in the future, but also ensures a consistent, industry standard for all translations.
+- Client: A full rework of all error messages, alerts and snackbars for clearer, standardized user feedback.
+- Client: Merged `Application Software`, `Application Backups` and `Application Settings` cards into a single, more refined `Application` card.
+- Client: Migrated i18n translation keys for `ai` and `user` to their own domain specific `i18n/*.json` files for improved maintainability.
+- Client: Migrated `formatDate` out into separate `formatDate`, `formatTime` and `formatDateTime` functions for clearer code separation, simpler logic and to support the new `DateFormat` and `TimeFormat` user preferences.
+- Client: Migrated currency code from `formatNumber` to new `formatCurrency` function for clearer code separation and simpler logic.
+- Client: Migrated all `password` TextFields from multiple components to use a new `PasswordInput` primitive.
+- Client: Migrated `CurrencyPicker` to a stand alone component that can now be used system wide.
+- Client: Migrated all components and typography code in `/styles/theme` out into their own files for better maintainability.
+- Client: Migrated all `/domains/common/components` components into a new folder structure to mirror the standard way MUI organizes common components.
+- Client: Updated the Admin Panel -> Application Backups stacked bar chart to now render in the users chosen primary color.
+- Client: Merged `AddNewAiProviderButton` and `AiProviderEditor` components into a new `AiProviderFormDialog` component.
+- Client: Migrated code that deletes AI Providers into a common `DeleteDialog` component.
+- Client: Updated the Audit and System log "context" dialogs to match the standard dialog stylings.
+- Client: Migrated the Add AI Provider button to the top of the card and updated it to better support mobile screens.
+- Client: Updated all Dialogs to better support mobile screens.
+- Client: Migrated all Settings -> Profile -> Location components to the `common` domain as new primitives (`StreetAddressInput`, `CityInput`, `CountryPicker` etc) and replaced them with wrapper components (`StreetAddressField`, `CityField`, `LocationCountryPicker` etc). This allows for the primitives to be reused across all domains where ever location inputs are required in the future.
+- Client: Migrated all Settings -> AI components to the `ai` domain.
+- Client: Renamed multiple Settings components for a more consistent naming standard including: `ActiveSessions` -> `ActiveSessionsList`, `AiSwitch` -> `AiEnabledSwitch`, `UsernameEditor` -> `UsernameField`, `DisplayNameEditor` -> `DisplayNameField`, `DietaryPreferencesEditor` -> `DietaryPreferencesField`, `OccupationEditor` -> `OccupationField`, `DependentsEditor` -> `DependentsField`, `HeightEditor` -> `HeightField`, `ApplicationSettings` -> `ApplicationSettingsDialog`, `AuditLogs` -> `AuditLogsTable`, `SystemLogs` -> `SystemLogsTable`, `UserManagement` -> `UserManagementTable`
+- Server: Migrated the `seed` directory to be in the main `/config-defaults/db` folder for a more logical folder structure.
+- Server: Separated `/config-defaults/db/init/00-init.sql` into separate files (`00-init.sql`, `01-common.sql`, `02-user.sql` etc) to better align with each domain as well as to improve manageability.
+- Server: Updated `/entrypoint/08-setup_mariadb_merged` script to support merging multiple init SQL files.
+- Server: Migrated `/Domain/System/Enums/Backup/DataType` enum to `/Domain/System/Enums/AppDomain` and updated it to match all domains including the new AI and Finance. This also ensures all database tables are included in backing up and restoring of data.
+- Server: Updated all `MapToModel` and `save` Repository functions to convert all `snake_case` database rows to `camelCase` and vice versa.
+- Server: Updated all Finance, Common, AI, System and User domain Server Responses to return Data Transfer Objects (DTOs) for cleaner, more structured and maintainable Controller responses.
+- Server: Updated `DatabaseService` and all Service layer code to fully support database transactions where required to ensure atomicity (e.g., using PDO's `beginTransaction()`, `commit()`, and `rollback()`.)
+- Server: A full rework of the entire ApiError system and all error messages, giving them more information for better client feedback.
+- Database: Migrated all files to `snake_case` naming structure to better align with industry best practices.
+- Database: Separated out all migration commands into individual files and updated endpoint script.
+- Database: Updated many tables and columns to fix inconsistencies, enable new features and adhere to standards.
+
+### Removed
+- None
+
+### Fixed
+- Client: Fixed issue where entering values longer than 255 characters in the Settings -> Profile -> Dietary Preferences field would cause a database error.
+- Client: Fixed issue where you would see "token expired" error after being on a page for 15+ minutes
+- Client: Fixed mobile view issue where the `NavBar` was cutting off content at the bottom of the page.
+- Client: Fixed AI Chat not working for the OpenAI provider due to wrong stream handling
+- Client: Fixed AI Chat not working for the Anthropic provider due to wrong stream handling
+- Client: Fixed the page crashing when opening the options menu in the AI chat history draw
+- Client: Fixed the use of `// eslint-disable-next-line...` everywhere due to `customFetch` constantly changing and refreshing everything
+- Server: Fixed `UnitSystem` enum, which had incorrect names.
+- Database: Fixed `country.region` row enum to be lower case to align with code standards.
+- Database: Fixed `ai_persona.category` row enum to be `snake_case` to align with code standards.
+- Database: Fixed `created_at` and `updated_at` rows of many tables to ensure consistent `TIMESTAMP` usage and `NOT NULL` constraints.
+
+### Security
+- Client: Updated Node.js docker image from `24` to `26`
+- Client: Added `@mui/x-charts` at version `9.3.0`
+- Client: Added `i18next-icu` at version `2.4.3`
+- Client: Updated `@mui/material` from `7.3.4` to `9.0.1`
+- Client: Updated `@mui/x-data-grid` from `8.14.1` to `9.3.0`
+- Client: Updated `@mui/x-date-pickers` from `8.14.1` to `9.3.0`
+- Client: Updated `date-fns` from `4.1.0` to `4.4.0`
+- Client: Updated `i18next` from `25.6.0` to `26.3.0`
+- Client: Updated `i18next-browser-languagedetector` from `8.2.0` to `8.2.1`
+- Client: Updated `react` from `19.2.0` to `19.2.7`
+- Client: Updated `react-dom` from `19.2.0` to `19.2.7`
+- Client: Updated `react-i18next` from `16.1.4` to `17.0.8`
+- Client: Updated `react-router-dom` from `7.9.4` to `7.16.0`
+- Server: Updated PHP docker image from `8.4.12` to `8.5.6`  
+- Server: Updated `symfony/translation` from `7.3.4` to `8.1.0`  
+- Server: Updated `symfony/translation-contracts` from `3.6.0` to `3.7.0`  
+- Server: Updated `symfony/polyfill-mbstring` from `1.33.0` to `1.38.1`
+- Server: Updated `slim/psr7` from `1.7.1` to `1.8.0`
+- Server: Updated `slim/slim` from `4.15.0` to `4.15.2`
+
 ## [v1.1.0] - 2025.10.22
 
 > This release introduces new core upgrade capabilities, AI Personas and security updates.
@@ -10,7 +112,7 @@ All notable changes to this project will be documented in this file. The format 
 - **AI Persona**: AI Identity has been replaced with AI Personas. Personas align with typical job titles (eg Accountant) and are lightweight system prompts defining the AI role and behavior, they set expertise, tone, and boundaries. This change was made to better align with industry standards and several hundred new AI Personas have been added spanning many industries and job titles.
 - Added Server Version class for single source of truth code and API version.
 - Added Database migrations folder to enable upgrading of the database when new versions are deployed.
-- Added Client `AllowSignUpsSwitch` component under Settings -> Admin Panel -> Application Settings to allow admins to enable or disable site wide sign ups.
+- Added Client `AllowSignUpsSwitch` component under Settings -> Admin Panel -> Application Settings -> General to allow admins to enable or disable site wide sign ups.
 
 ### Changed
 - Changed Server entry point script to a modular design for improved maintainability and readability.
@@ -40,7 +142,6 @@ All notable changes to this project will be documented in this file. The format 
 - **Update Notifications**: Get notified about new Athena releases and see full change logs under Settings -> Admin Panel -> Application software.
 - **Application Backup and Restore**: Effortlessly create full or partial backups of your data with a few clicks, stored as transparent, industry-standard SQL dump files. Restore all or specific system components seamlessly, ensuring complete control over your private data.
 - **One Click AI Prompts**: Create, edit and use the new AI Prompt Templates for quick and easy AI tasks like summarization, wisdom extraction, writing improvement and more. Located in the Settings -> AI and the AI Chat Input area, simply pick your prompt template and get access to a whole host of refined prompts to get the best answers out of your AI.
-- **Athen Mascot!**: With the official launch of Athena comes our new mascot [Thaddeus](docs/mascot.md) the Sheltie!
 - Added `createdAt` and `updatedAt` columns to all Database tables, as well as supporting Server and Client code.
 - Added Client `Sign Out Everywhere` button to the Settings -> Security -> Active Sessions area.
 - Added Client `Prompt Suggestions` switch under Settings -> AI -> AI Assistant area to allow users to enable or disable the feature.
@@ -67,7 +168,7 @@ All notable changes to this project will be documented in this file. The format 
 - Changed Database structure so that schema creation and seeding of system data is separated for improved maintainability and clarity.
 
 ### Fixed
-- Fixed Client `AiSettingsPopover` button that was displayed incorrectly in the AI Chat area when no AI Provider was available.
+- Fixed Client `ChatSettingsPopover` button that was displayed incorrectly in the AI Chat area when no AI Provider was available.
 - Fixed Client issue where after deleting an AI Chat conversation, the `conversationId` wouldn't be cleared properly, causing UI issues.
 - Fixed Client issue where tables didn't extend to the edges of a Card when inside a `CardContent` component.
 - Fixed Client `AuthProvider` issue where the `refresh` function was causing a cascade of events through  `customFetch`, which then caused a full page refresh of all components every 14 minutes.
@@ -96,7 +197,7 @@ All notable changes to this project will be documented in this file. The format 
 - **Profile Settings Layout**: Reorganized **Settings > Profile** for easier navigation with new components.
 - **Currency Support**: Updated the **currency** table to include language translations and defined decimal places for better financial tracking.
 - **Account Management**: Moved **Delete Account** to **Settings > Security > Sign In & Account** and renamed **Authentication** to **Sign In & Account** for clarity.
-- **Chat Optimization**: Streamlined the **ChatInput** component by moving functionality to **AddProfileDataPopover** and **AiSettingsPopover** for better performance.
+- **Chat Optimization**: Streamlined the **ChatInput** component by moving functionality to **ChatAddProfileDataPopover** and **ChatSettingsPopover** for better performance.
 
 ### Removed
 - **Profile Contact Subcategory**: Removed from the user data structure to simplify the interface.
@@ -109,7 +210,7 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed incorrect setting of new user display names.
 - Fixed incorrect username validation checking.
 
-## [v0.3.3] - 2025-07-18
+## [v0.3.3] - 2025.07.18
 ### New Features
 - **AI Chat Interface**: Introduced a new AI Chat feature in the Client, letting you send and receive messages using your chosen AI model. Customize your experience with AI Assistant options, including different AI Identities and Output Length settings.
 - **AI Chat Conversations**: Create, rename, or delete AI chat conversations. You can also let the AI auto-generate conversation titles for convenience.
@@ -118,7 +219,7 @@ All notable changes to this project will be documented in this file. The format 
 - **AI Provider Management**: Manage your AI providers with the new **AI Provider Cards** feature. Add, sync, edit, or remove providers from a supported list, tailored to your preferences.
 - **AI Setup Assistant**: A new **AI Setup** component guides you through configuring a new AI provider and selecting your preferred AI model, making setup quick and seamless.
 
-## [v0.2.5] - 2025-05-11
+## [v0.2.5] - 2025.05.11
 ### New Features
 - **Secure Authentication**: Added JWT-based authentication with access and refresh tokens for secure Client and Server interactions.
 - **HTTPS Support**: Enabled HTTPS with TLS 1.3 and self-signed certificates via Nginx proxy for secure connections.

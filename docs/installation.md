@@ -14,7 +14,7 @@
 - [Direct Database Access](#direct-database-access)
 
 ## Quick Start - Docker Compose
-The below commands will download and build the entire project from scratch, locally on your system, in around 60 seconds using the pre-built Docker images. This is the fasteset, easiest way to build Athena without having to install Node.js, PHP... etc all on your computer or server
+The below commands will download and build the entire project from scratch, locally on your system, in around 60 seconds using the pre-built Docker images. This is the fastest, easiest way to build Athena without having to install Node.js, PHP... etc all on your computer or server
 
 ![okay-lets-ride](images/installation/okay-lets-ride.gif)
 
@@ -35,35 +35,42 @@ git clone https://github.com/athena-alpha/athena.git && cd athena && docker comp
 A single `data` volume is required to persist user data across restarts and upgrades:
 - `data/config`: Stores files used to configure the system on first startup (`.env`, `db/init/01-common.sql`, `nginx/nginx.conf`, `nginx/fastcgi_params`, `nginx/certs`).
 - `data/db`: Stores the main database files.
-- `data/secrets`: Stores sensitive files that are randomly generated on first startup (`mariadb_password`, `master_encryption_key`, `jwt_secret`).
-- `data/tmp`: Stores the temporary database files.
+- `data/exports`: Dedicated directory for user data exports
+- `data/secrets`: Stores sensitive files that are randomly generated on first startup (`mariadb_password`, `mariadb_backup_restore_password`, `master_encryption_key`, `jwt_secret`).
+- `data/tmp`: Temporary directory for file storage
 
 ## Application Settings
-Application settings are viewable via the `Settings -> Admin Panel` area and include:
-| Setting | Description |
-|---------|-------------|
-| `allow_sign_up` | Enables or disables new user sign-ups |
-| `site_name` | Name used in emails and other areas |
-| `default_theme` | The default theme applied to new users |
-| `default_primary_color` | The default primary color applied to new users |
-| `default_language` | The default language applied to new users |
-| `default_time_zone` | The default time zone applied to new users |
-| `default_units` | The default unit system applied to new users |
-| `default_currency` | The default currency applied to new users |
-| `default_fiscal_year` | The default fiscal year applied to new users |
-| `max_sign_in_attempts` | Maximum sign-in attempts before lockout |
-| `lockout_duration_seconds` | Duration of lockout after max attempts |
-| `min_username_length` | Minimum length that usernames can be |
-| `max_username_length` | Minimum length that usernames can be |
-| `min_password_length` | Minimum length that passwords can be |
-| `max_password_length` | Maximum length that passwords can be |
-| `audit_log_retention_days` | Number of days after which audit logs are deleted |
-| `system_log_retention_days` | Number of days after which system logs are deleted |
-| `api_rate_limit_public_minutes` | The rate limit for public API endpoints in minutes per IP |
-| `api_rate_limit_authenticated_minutes` | The rate limit for authenticated API endpoints in minutes per user |
+Application settings are viewable and editable via Settings -> Admin Panel -> Application -> Settings and include:
+
+| Setting                     | Description |
+|-----------------------------|-------------|
+| `allowSignUp`               | Enables or disables new user registration (sign-ups) |
+| `siteName`                  | The name of the application used in emails, page titles, and other user-facing areas |
+| `defaultTheme`              | The default theme applied to new user accounts (`light`, `dark`, or `system`) |
+| `defaultPrimaryColor`       | The default primary/accent color applied to new user accounts |
+| `defaultLanguage`           | The default language applied to new user accounts |
+| `defaultTimeZone`           | The default timezone applied to new user accounts |
+| `defaultUnits`              | The default measurement units system applied to new user accounts (`metric` or `imperial`) |
+| `defaultCurrency`           | The default currency applied to new user accounts |
+| `defaultFiscalYear`         | The default fiscal year start date (MM-DD format) applied to new user accounts |
+| `minUsernameLength`         | Minimum allowed length for usernames |
+| `maxUsernameLength`         | Maximum allowed length for usernames |
+| `minPasswordLength`         | Minimum allowed length for passwords |
+| `maxPasswordLength`         | Maximum allowed length for passwords |
+| `jwtAccessTtl`              | Time-to-live (in seconds) for JWT access tokens |
+| `jwtRefreshTtl`             | Time-to-live (in seconds) for JWT refresh tokens |
+| `jwtMaxRefreshTtl`          | Maximum cumulative time-to-live (in seconds) for refresh token rotation |
+| `signInAttemptsLimit`       | Maximum failed sign-in attempts before account lockout |
+| `signInLockoutDuration`     | Lockout duration (in seconds) after reaching maximum sign-in attempts |
+| `publicApiRateLimit`        | Rate limit for unauthenticated/public API endpoints (requests per window) |
+| `publicApiLockoutDuration`  | Lockout duration (in seconds) for public API rate limit violations |
+| `authApiRateLimit`          | Rate limit for authenticated API endpoints (requests per window) |
+| `authApiLockoutDuration`    | Lockout duration (in seconds) for authenticated API rate limit violations |
+| `auditLogRetentionDays`     | Number of days to retain audit logs before automatic deletion |
+| `systemLogRetentionDays`    | Number of days to retain system logs before automatic deletion |
 
 ## Updating
-- Backup your data (**Seriously, always backup your data!!!**) by going to the `Settings -> Admin Panel -> Application backups` area
+- Backup your data (**Seriously, always backup your data!!!**) by going to Settings -> Admin Panel -> Application -> Create backup
 - Stop the Athena services
 ```bash
 docker compose down

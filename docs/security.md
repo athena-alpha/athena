@@ -13,17 +13,17 @@ We adhere to the latest, industry-leading privacy and security standards, drawin
 
 ## Security Best Practices
 - **No External Access:** While every effort has been made, we recommend you **do not** allow external Internet access to Athena at any time
-- **Turn Off Sign Ups:** While logged in as an Administrator, navigate to Settings -> Admin Panel -> Application Settings and **turn off** new Sign Ups <span style="color: rgba(230, 215, 6, 1);">**[Coming soon...]**</span>
+- **Turn Off Sign Ups:** While logged in as an Administrator, navigate to Settings -> Admin Panel -> Application -> Settings -> General and **turn off** "Allow new sign ups"
 - **Enable MFA:** Multi Factor Authentication adds a secondary layer of security to your login and data, we recommend enabling it upon sign up
 - **Enable HTTPS:** By default, HTTPS and TLS v1.3 is enabled via the Nginx proxy service and randomly generated SSL certificates. Although the data transferred between your computer and the Athena Docker container should only be done over an internal LAN, these can still have untrusted devices (looking at you IoT!) that can snoop. Ensure HTTPS is always enabled for full end-to-end encryption of all data
 - **Keep Athena Updated:** Please ensure you update the Docker images promptly to ensure all security bugs are squashed
 
 ## Authentication & Authorization Overview
 ### Server
-- **Signup & Signin:** Returns `accessToken` in the JSON response body and `refreshToken` in a secure cookie.
-- **Refresh:** Expects the `refreshToken` in the request cookie and returns a new `accessToken` and `refreshToken`.
-- **Signout:** Revokes the `refreshToken` cookie on the server side and client side.
-- **Auth Middleware:** Validates the `accessToken` provided in the Authorization: Bearer header for protected routes.
+- **Signup & Signin:** Returns `accessToken` in the JSON response body and `refreshToken` in a secure cookie
+- **Refresh:** Expects the `refreshToken` in the request cookie and returns a new `accessToken` and `refreshToken`
+- **Signout:** Revokes the `refreshToken` cookie on the server side and client side
+- **Auth Middleware:** Validates the `accessToken` provided in the Authorization: Bearer header for protected routes
 
 ### Client
 - **Access Token:** Stored in memory only (not local storage!) and used for any authenticated API requests
@@ -31,19 +31,16 @@ We adhere to the latest, industry-leading privacy and security standards, drawin
 - **Automatic Refresh:** Refreshes the `accessToken` when it expires every 15 minutes using the `refreshToken`
 
 ## Security Features
-Below are a list of security and privacy features that have either been developed or are in development
 
-### Current Status: 75/76 (99%)
-
-### User Privacy (5/6)
-- Private and anonymous by default. No personally identifiable information required. Ever.
+### User Privacy
+- Private and anonymous by default. No personally identifiable information required. Ever
 - No logging of any events (except authentication and the currently logged in sessions for enhanced security features), to enable additional privacy protection and anonymity
 - Failed sign in attempts are logged and rate limiting is applied to stop brute force attacks
 - Can be Self Hosted via a freely downloadable Docker image for full data and privacy sovereignty
-- <span style="color: #888888;">In development - All user data can be viewed, downloaded and deleted easily via Settings giving you instant, complete control</span>
+- All user data can be viewed, downloaded and deleted easily via Settings -> Data & privacy giving you instant, complete control
 - See all of your active sessions, when they expire and remotely sign out of any you don’t want
 
-### Authentication (12/12)
+### Authentication
 - Password management fully enforced to NIST, NCSC and OWASP best practices
 - Usernames are case insensitive and unique
 - Password minimum length requirements set to 15+ characters by default
@@ -57,11 +54,11 @@ Below are a list of security and privacy features that have either been develope
 - Protection against automated or brute force attacks by limiting sign in attempts and account lockouts
 - Sessions are invalidated on signout, and refresh tokens are rotated to prevent session hijacking
 
-### Password Storage (2/2)
+### Password Storage
 - Password storage uses state of the art Argon2id hashing to secure against database breaches
 - Automatic salting of all hashed passwords as part of the Argon2id standard
 
-### Authorization (11/11)
+### Authorization
 - Authorization logic is built to be “deny by default” to ensure even when unexpected events occur resources are still secure
 - Authorization to any resource is always tested on every request made
 - Authorization checks are built into both client side (for an improved user experience) and verified on the server side too
@@ -74,14 +71,14 @@ Below are a list of security and privacy features that have either been develope
 - Encoding and decoding of JWT’s uses standardized, dependency free functions
 - Standard JWT claims such as iss, aud, exp and nbf are built into every token and validated on every request via the centralized JwtManager
 
-### Input Validation (5/5)
+### Input Validation
 - All client side forms have strict and thorough data validation to prevent incorrect data being sent to the server
 - Data is validated immediately as it’s read into the system to prevent attacks as early as possible
 - Input validation code is standardized to ensure application compliance across all parts of the application
-- Data is validated on both syntactical (eg. a date field contains a date) and semantic (eg. start date is before end date) levels
+- Data is validated on both syntactical (e.g., a date field contains a date) and semantic (e.g., start date is before end date) levels
 - Data is validated to ensure it adheres to logical length and value types
 
-### Database (11/11)
+### Database
 - The MariaDB database is hardened according to their given hardening guidelines
 - The MariaDB application itself is not run under the systems root account and uses the dedicated “mysql” user instead
 - The root database account is protected with a strong and unique password
@@ -94,7 +91,7 @@ Below are a list of security and privacy features that have either been develope
 - All database queries use prepared statements with variable binding to protect against SQL injection attacks
 - Database query code built using PHP PDO to enable support for a wide range of database back ends
 
-### Transport Layer (6/6)
+### Transport Layer
 - Where required, only the most up to date and secure TLS version 1.3 is supported
 - Where required, only the most up to date and secure GCM ciphers are supported
 - HTTPS using TLS is enabled site wide and on all pages, to enable enhanced security
@@ -102,7 +99,7 @@ Below are a list of security and privacy features that have either been develope
 - All cookies are marked with the “Secure” attribute, ensuring they are only sent over encrypted HTTPS connections
 - Caching of sensitive data is prevented by setting cache headers to not cache any of the data transferred
 
-### NodeJS (7/7)
+### NodeJS
 - Third party dependencies are minimized and kept up to date to ensure they are patched for the latest security updates
 - Commonly known dangerous functions are avoided to ensure they can’t be used in attacks
 - Regular expressions are used sparingly and fully reviewed to ensure mitigation against ReDoS attacks
@@ -111,7 +108,7 @@ Below are a list of security and privacy features that have either been develope
 - All code is developed using ECMAScript version ES2022, ensuring unsafe and dangerous legacy features aren’t used
 - Dependencies are regularly scanned for vulnerabilities using tools like `npm audit` and updated promptly
 
-### RESTful API (12/12)
+### RESTful API
 - API only provides HTTPS endpoints for secure data transfer
 - Each API endpoint allows only the HTTP request methods that are required
 - Full suite of security headers passed with every API response matching OWASP recommendation, verified to receive A+ security rating
@@ -125,7 +122,7 @@ Below are a list of security and privacy features that have either been develope
 - Comprehensive server logging to help catch and debug issues as well as detect improper access
 - Automatic deletion of old logs via user configurable retention days and crond
 
-### HTML5 (4/4)
+### HTML5
 - Location permissions are never asked for as no personally identifiable information is required. Ever.
 - To increase security and prevent Tabnabbing, rel=”noopener noreferrer” tags are used on all external links
 - All iframes use the sandbox attribute to ensure restricted permissions
