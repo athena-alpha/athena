@@ -18,7 +18,7 @@ The below commands will download and build the entire project from scratch, loca
 
 ![okay-lets-ride](images/installation/okay-lets-ride.gif)
 
-- First, install [Docker and Docker Compose](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+- First, install [Docker Desktop](https://docs.docker.com/get-started/get-docker/)
 - Next clone the repo, build and run [docker-compose.yml](../docker-compose.yml) with the commands below
 ```bash
 git clone https://github.com/athena-alpha/athena.git && cd athena && docker compose up --build
