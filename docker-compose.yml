@@ -1,7 +1,7 @@
 x-volumes:
   &data-volume # Uncomment *ONE* of the appropriate lines for your platform
     - data:/data                                        # Use this for Docker on Linux, Windows, etc.
-    # - /volume1/docker/Athena:/data                    # Use this for Synology NAS or ASUSTOR Docker Center
+    # - /volume1/docker/athena:/data                    # Use this for Synology NAS or ASUSTOR Docker Center
     # - /share/CACHEDEV1_DATA/Container/Athena:/data    # Use this for QNAP Container Station (replace CACHEDEV1_DATA with your volume)
     # - ./athena-data:/data                             # Use this for Portainer or Dockge
     # - /mnt/PoolName/Docker/Athena:/data               # Use this for TrueNAS SCALE (replace PoolName with your pool, e.g., tank)

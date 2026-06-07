@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.3] - 2026.06.07
+
+### Fixed
+- Nginx: Updated `proxy_pass` parameters in `nginx.conf` to match the `docker-compose.yml` container names for additional system stability
+
 ## [v1.2.2] - 2026.06.06
 
 ### Changed
@@ -12,7 +17,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 - Client: Fixed issue with the Admin Panel -> Application -> Check for updates area `ApplicationSoftwareListItem` not correctly showing new patch versions are available
-- Server: Fix an entrypoint script bug that prevented the server from starting if no database migration files were present in a new version
+- Server: Fixed an entrypoint script bug that prevented the server from starting if no database migration files were present in a new version
 
 ## [v1.2.1] - 2026.06.06
 
