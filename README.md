@@ -5,8 +5,8 @@
 
 > Your personal life manager, built with privacy, choice and beauty at its heart.
 
-[![Quick Start](https://img.shields.io/badge/Quick_Start-blue.svg?style=for-the-badge&color=9c27b0)](docs/installation.md) &nbsp; [![Security](https://img.shields.io/badge/Security-blue.svg?style=for-the-badge&color=9c27b0)](docs/security.md) &nbsp; [![Changelog](https://img.shields.io/badge/Changelog-blue.svg?style=for-the-badge&color=9c27b0)](CHANGELOG.md)<br />
-[![Contribute!](https://img.shields.io/badge/Contribute!-blue.svg?style=for-the-badge&color=9c27b0)](docs/CONTRIBUTING.md) &nbsp; [![Help Translate!](https://img.shields.io/badge/Help_Translate!-blue.svg?style=for-the-badge&color=9c27b0)](docs/localization.md)<br />
+[![Quick Start](https://img.shields.io/badge/Quick_Start-blue.svg?style=for-the-badge&color=9c27b0)](docs/installation.md)&nbsp; [![Security](https://img.shields.io/badge/Security-blue.svg?style=for-the-badge&color=9c27b0)](docs/security.md)&nbsp; [![Changelog](https://img.shields.io/badge/Changelog-blue.svg?style=for-the-badge&color=9c27b0)](CHANGELOG.md)<br />
+[![Contribute!](https://img.shields.io/badge/Contribute!-blue.svg?style=for-the-badge&color=9c27b0)](docs/CONTRIBUTING.md)&nbsp; [![Help Translate!](https://img.shields.io/badge/Help_Translate!-blue.svg?style=for-the-badge&color=9c27b0)](docs/localization.md)<br />
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 </div>
 
@@ -37,3 +37,6 @@ We strive to use the most up to date LTS software stacks for their enhanced secu
 - **[Athena Server:](https://github.com/athena-alpha/athena-server)** is built using [PHP-FPM v8](https://www.php.net) + [Slim 4](https://www.slimframework.com) + [Composer](https://getcomposer.org/) and conforms to [PSR](https://www.php-fig.org/psr/) + [RFC](https://www.rfc-editor.org/rfc) + [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) standards, the Server provides an open RESTful API to the Client using standard JSON responses
 - **Database:** Built using MariaDB, the Database stores all application and users data and can be [directly accessed](/docs/installation.md#direct-database-access)
 - **Nginx:** Proxies external HTTPS traffic to the Client (port 3000) and Server (port 9000)
+
+## API
+[Athena Server](https://github.com/athena-alpha/athena-server) exposes a fully open RESTful API that you can integrate with directly. The API is comprehensively documented via the [openapi.json](docs/openapi.json) specification file. Simply copy its contents into any [OpenAPI](https://www.openapis.org/) compatible viewer such as [Swagger Viewer](https://devtoollab.com/tools/swagger-viewer) or [OpenAPI Viewer](https://www.openapiviewer.com) to explore.

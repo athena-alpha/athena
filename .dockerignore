@@ -1,2 +1,92 @@
-client/node_modules
+###############################################################################
+# Athena Client — .dockerignore
+#
+# Excludes files and directories from the Docker build context.
+# A lean build context reduces image build time and attack surface.
+#
+# Files needed in the final image build stage:
+#   src/, public/, index.html, vite.config.ts, tsconfig*.json
+#   package.json, package-lock.json
+#
+# Dependencies (node_modules/) are installed inside the image via:
+#   RUN npm ci --ignore-scripts
+###############################################################################
+
+
+# Version control
+# ---------------
+.git/
+.gitignore
+.github/
+
+
+# Node.js dependencies
+# --------------------
+# Installed inside the image at build time; never copy from the host.
+/node_modules/
+
+
+# Vite build output
+# -----------------
+# Produced inside the image; host output is irrelevant to the build.
+/dist/
+/dist-ssr/
+
+
+# Vite cache
+# ----------
+.vite/
+
+
+# TypeScript incremental build cache
+# -----------------------------------
+*.tsbuildinfo
+
+
+# Test coverage
+# -------------
+/coverage/
+
+
+# Linting & formatting config
+# ---------------------------
+# Development tooling not required inside the image.
+.eslintrc*
+.eslintignore
+.prettierrc*
+.prettierignore
+.stylelintrc*
+
+
+# Environment & secrets
+# ---------------------
+# Secrets and runtime config are injected via environment variables.
 .env
+.env.local
+.env.*.local
+
+
+# IDE & editor
+# ------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+nbproject/
+.netbeans/
+
+
+# OS-generated metadata
+# ---------------------
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+
+# Documentation
+# -------------
+*.md
+LICENSE
+CHANGELOG

@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.4] - 2026.06.09
+
+> Comprehensive new API documentation, stability and security enhancements
+
+### New Features
+- Docs: The API is now comprehensively documented via the [openapi.json](docs/openapi.json) specification file. Simply copy its contents into any [OpenAPI](https://www.openapis.org) compatible viewer such as [Swagger Viewer](https://devtoollab.com/tools/swagger-viewer) or [OpenAPI Viewer](https://www.openapiviewer.com) to explore
+
+### Changed
+- Server: Centralized all database transaction functionality via the new `DatabaseService::transactional` function
+- Database: Removed the `ck_finance_account_balance` constraint from the `finance_account` table
+
+### Fixed
+- Server: All server code now passes PHPStan analyse level 5, fixing 80+ errors spanning multiple files for increased stability
+
+### Security
+- Client: Updated `@mui/material` from `9.0.1` to `9.1.0`
+- Client: Updated `@mui/x-charts` from `9.4.0` to `9.6.0`
+- Client: Updated `@mui/x-data-grid` from `9.4.0` to `9.6.0`
+- Client: Updated `@mui/x-date-pickers` from `9.4.0` to `9.6.0`
+- Client: Updated `react-router-dom` from `7.17.0` to `7.18.0`
+- Server: Updated `symfony/translation` from `7.4.10` to `8.1.0`
+- Server: API keys for AI Providers are now encrypted with AES-256-GCM in the database using a per-user key derived using HKDF (RFC 5869, NIST SP 800-56C Rev 2), keeping your secrets safer
+
+
 ## [v1.2.3] - 2026.06.07
 
 ### Fixed
