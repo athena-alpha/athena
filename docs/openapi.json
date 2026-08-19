@@ -7,7 +7,7 @@
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
         },
-        "version": "1.2.4"
+        "version": "1.3.0"
     },
     "servers": [
         {
@@ -3041,6 +3041,51 @@
                 }
             }
         },
+        "/finances/asset-value-history/bulk": {
+            "delete": {
+                "tags": [
+                    "finance"
+                ],
+                "summary": "Bulk delete valuation history records",
+                "description": "Performs bulk deletion of multiple manual asset valuation history records for the authenticated user.",
+                "operationId": "89e040f173373e8ef7fb821df0b1d5c5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ids"
+                                ],
+                                "properties": {
+                                    "ids": {
+                                        "description": "Array of asset value history IDs to delete",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/ApiExceptionResponse"
+                    }
+                }
+            }
+        },
         "/finances/budgets": {
             "get": {
                 "tags": [
@@ -3768,6 +3813,51 @@
                 }
             }
         },
+        "/finances/categories/bulk": {
+            "delete": {
+                "tags": [
+                    "finance"
+                ],
+                "summary": "Bulk delete categories",
+                "description": "Performs bulk deletion of multiple categories for the authenticated user.",
+                "operationId": "1cd47b5a564805d15bb34b7ec211981f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ids"
+                                ],
+                                "properties": {
+                                    "ids": {
+                                        "description": "Array of category IDs to delete",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/ApiExceptionResponse"
+                    }
+                }
+            }
+        },
         "/finances/exchange-rates": {
             "get": {
                 "tags": [
@@ -4260,18 +4350,30 @@
                     "finance"
                 ],
                 "summary": "Create a new import",
-                "description": "Creates a new import session for the authenticated user.",
+                "description": "Creates a new import session of the given type for the authenticated user.",
                 "operationId": "923e6cd2ec52689f4bedbc39e6418ab4",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "type"
+                                ],
                                 "properties": {
+                                    "type": {
+                                        "$ref": "#/components/schemas/ImportSessionType"
+                                    },
                                     "accountId": {
-                                        "description": "Optional default account ID for imported transactions",
+                                        "description": "Destination account ID. Only valid when type requires an account",
                                         "type": "integer",
                                         "example": 5,
+                                        "nullable": true
+                                    },
+                                    "assetId": {
+                                        "description": "Target asset ID. Only valid when type requires an asset",
+                                        "type": "integer",
+                                        "example": 5432,
                                         "nullable": true
                                     }
                                 },
@@ -4348,7 +4450,7 @@
                     "finance"
                 ],
                 "summary": "Update an import",
-                "description": "Updates an existing import session (e.g. account, step, mappings) for the authenticated user.",
+                "description": "Updates an existing import session (e.g. target, step, mappings) for the authenticated user.",
                 "operationId": "e512169635557718833f17d33662b55f",
                 "parameters": [
                     {
@@ -4369,9 +4471,15 @@
                             "schema": {
                                 "properties": {
                                     "accountId": {
-                                        "description": "Associated account ID",
+                                        "description": "Associated account ID. Only valid when the session's type requires an account",
                                         "type": "integer",
                                         "example": 5,
+                                        "nullable": true
+                                    },
+                                    "assetId": {
+                                        "description": "Associated asset ID. Only valid when the session's type requires an asset",
+                                        "type": "integer",
+                                        "example": 5432,
                                         "nullable": true
                                     },
                                     "step": {
@@ -4480,6 +4588,52 @@
                                         "data": {
                                             "description": "Preview data structure",
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/ApiExceptionResponse"
+                    }
+                }
+            }
+        },
+        "/finances/imports/{id}/fields": {
+            "get": {
+                "tags": [
+                    "finance"
+                ],
+                "summary": "Get import field schema",
+                "description": "Returns the ordered list of mappable CSV fields for this import session's type, for the Step 2 column-mapping UI.",
+                "operationId": "9bb2cb57b6069a24511507e9698db3a4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the import session",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "Array of mappable field definitions, in display order",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ImportFieldResponseDTO"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -4611,7 +4765,7 @@
                     "finance"
                 ],
                 "summary": "Commit an import",
-                "description": "Commits the import session by inserting ready rows as transactions.",
+                "description": "Commits the import session by inserting ready rows as domain records.",
                 "operationId": "6d6ec851dda6e82d9a85134b011888da",
                 "parameters": [
                     {
@@ -4651,7 +4805,7 @@
                     "finance"
                 ],
                 "summary": "Rollback an import",
-                "description": "Rolls back a committed import by deleting associated transactions and resetting the session.",
+                "description": "Rolls back a committed import by deleting associated records and resetting the session.",
                 "operationId": "a892af8067d2274aedc0c3391d00d29a",
                 "parameters": [
                     {
@@ -6596,90 +6750,6 @@
                                 }
                             }
                         }
-                    },
-                    "default": {
-                        "$ref": "#/components/responses/ApiExceptionResponse"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "system"
-                ],
-                "summary": "Delete multiple logs",
-                "description": "Deletes multiple logs based on filters (Admin only).",
-                "operationId": "f3865f4cb79341521ca203612f7b8972",
-                "parameters": [
-                    {
-                        "name": "handler",
-                        "in": "query",
-                        "description": "Log handler type",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "audit",
-                                "system"
-                            ]
-                        },
-                        "example": "audit"
-                    },
-                    {
-                        "name": "level",
-                        "in": "query",
-                        "description": "Filter by log level",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "error"
-                    },
-                    {
-                        "name": "channel",
-                        "in": "query",
-                        "description": "Filter by log channel",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "app"
-                    },
-                    {
-                        "name": "action",
-                        "in": "query",
-                        "description": "Filter by log action",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "login"
-                    },
-                    {
-                        "name": "startDate",
-                        "in": "query",
-                        "description": "Start date filter",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        },
-                        "example": "2025-01-01"
-                    },
-                    {
-                        "name": "endDate",
-                        "in": "query",
-                        "description": "End date filter",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        },
-                        "example": "2025-06-01"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "$ref": "#/components/responses/NoContentResponse"
                     },
                     "default": {
                         "$ref": "#/components/responses/ApiExceptionResponse"
@@ -9133,6 +9203,91 @@
                 },
                 "type": "object"
             },
+            "AssetValueHistoryImportCommitResponseDTO": {
+                "title": "AssetValueHistoryImportCommitResponseDTO",
+                "description": "Data Transfer Object for an asset value history import commit response",
+                "properties": {
+                    "assetId": {
+                        "description": "The ID of the finance_asset these valuations were imported into",
+                        "type": "integer",
+                        "example": 5432
+                    },
+                    "dateRangeStart": {
+                        "description": "The earliest valuation date imported in this commit",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-01-01",
+                        "nullable": true
+                    },
+                    "dateRangeEnd": {
+                        "description": "The latest valuation date imported in this commit",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2026-06-01",
+                        "nullable": true
+                    },
+                    "latestValue": {
+                        "description": "The value recorded on dateRangeEnd, in the asset's own currency",
+                        "type": "number",
+                        "format": "float",
+                        "example": 450000,
+                        "nullable": true
+                    },
+                    "currencyCode": {
+                        "description": "The ISO 4217 currency code the asset (and latestValue) is denominated in",
+                        "type": "string",
+                        "example": "AUD"
+                    }
+                },
+                "type": "object"
+            },
+            "AssetValueHistoryImportRowDTO": {
+                "title": "AssetValueHistoryImportRowDTO",
+                "description": "Data Transfer Object for a single parsed row within an asset value history import session",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportRowDTO"
+                    },
+                    {
+                        "properties": {
+                            "date": {
+                                "description": "The parsed valuation date in Y-m-d format; null if unmapped or parse error",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2026-01-15",
+                                "nullable": true
+                            },
+                            "value": {
+                                "description": "The total market value at this date, in the asset's own currency; null if unmapped or parse error",
+                                "type": "number",
+                                "format": "float",
+                                "example": 450000,
+                                "nullable": true
+                            },
+                            "quantity": {
+                                "description": "The quantity held at this date; defaults to 1 when unmapped",
+                                "type": "number",
+                                "format": "float",
+                                "example": 1
+                            },
+                            "description": {
+                                "description": "Short description of the valuation. Required — the client should supply a locale-appropriate default (e.g. a translated 'Imported valuation') for rows where no description column was mapped",
+                                "type": "string",
+                                "example": "Imported valuation",
+                                "nullable": true
+                            },
+                            "notes": {
+                                "description": "Optional user notes",
+                                "type": "string",
+                                "example": "From bank statement export",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
             "AssetValueHistoryResponseDTO": {
                 "title": "AssetValueHistoryResponseDTO",
                 "description": "Data Transfer Object for asset valuation history responses",
@@ -9360,6 +9515,79 @@
                     }
                 },
                 "type": "object"
+            },
+            "CategoryImportCommitResponseDTO": {
+                "title": "CategoryImportCommitResponseDTO",
+                "description": "Data Transfer Object for a category import commit response",
+                "properties": {
+                    "incomeCount": {
+                        "description": "The number of 'income' type categories created in this commit",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "expenseCount": {
+                        "description": "The number of 'expense' type categories created in this commit",
+                        "type": "integer",
+                        "example": 12
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryImportRowDTO": {
+                "title": "CategoryImportRowDTO",
+                "description": "Data Transfer Object for a single parsed row within a category import session",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportRowDTO"
+                    },
+                    {
+                        "properties": {
+                            "name": {
+                                "description": "The category name; null if unmapped",
+                                "type": "string",
+                                "example": "Groceries",
+                                "nullable": true
+                            },
+                            "type": {
+                                "description": "The category type ('income' or 'expense'); null if unmapped or an invalid value",
+                                "type": "string",
+                                "example": "expense",
+                                "nullable": true
+                            },
+                            "role": {
+                                "description": "The category's cash flow role; defaults to 'operating' when unmapped",
+                                "type": "string",
+                                "example": "operating"
+                            },
+                            "parentName": {
+                                "description": "The name of an existing top-level category (or another row in this same import) this row should nest under; null for a top-level category",
+                                "type": "string",
+                                "example": "Housing",
+                                "nullable": true
+                            },
+                            "icon": {
+                                "description": "The Material Symbols icon name, if mapped",
+                                "type": "string",
+                                "example": "shoppingCart",
+                                "nullable": true
+                            },
+                            "color": {
+                                "description": "The hex color code, if mapped",
+                                "type": "string",
+                                "example": "#4CAF50",
+                                "nullable": true
+                            },
+                            "notes": {
+                                "description": "Optional user notes",
+                                "type": "string",
+                                "example": "Weekly shopping",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
             },
             "CategoryResponseDTO": {
                 "title": "CategoryResponseDTO",
@@ -9597,88 +9825,33 @@
                 },
                 "type": "object"
             },
-            "ImportCommitResponseDTO": {
-                "title": "ImportCommitResponseDTO",
-                "description": "Data Transfer Object for a import commit response",
+            "ImportFieldResponseDTO": {
+                "title": "ImportFieldResponseDTO",
+                "description": "Data Transfer Object describing a single mappable CSV field for an import session's type",
                 "properties": {
-                    "importedCount": {
-                        "description": "The number of rows successfully created as finance_transaction records",
-                        "type": "integer",
-                        "example": 245
+                    "key": {
+                        "description": "Machine key used as the column_mapping JSON key",
+                        "type": "string",
+                        "example": "value"
                     },
-                    "skippedCount": {
-                        "description": "The number of rows skipped (status was error or excluded)",
-                        "type": "integer",
-                        "example": 12
+                    "dataType": {
+                        "description": "The expected data type ('date', 'decimal', 'string', 'integer', or 'enum')",
+                        "type": "string",
+                        "example": "decimal"
                     },
-                    "transferCount": {
-                        "description": "The number of transfer pairs created or linked during this commit",
-                        "type": "integer",
-                        "example": 45
+                    "required": {
+                        "description": "Whether the user must map a CSV column to this field",
+                        "type": "boolean",
+                        "example": true
                     },
-                    "deposits": {
-                        "description": "Per-currency deposit totals, sorted ascending by currency code. Transfer rows are excluded",
+                    "enumValues": {
+                        "description": "Allowed values, present only for enum-typed fields",
                         "type": "array",
                         "items": {
-                            "properties": {
-                                "currencyCode": {
-                                    "description": "Currency code (ISO 4217)",
-                                    "type": "string",
-                                    "example": "EUR"
-                                },
-                                "total": {
-                                    "description": "Total amount for this currency",
-                                    "type": "number",
-                                    "format": "float",
-                                    "example": 1500
-                                }
-                            },
-                            "type": "object",
-                            "example": {
-                                "currencyCode": "EUR",
-                                "total": 1500
-                            }
+                            "type": "string"
                         },
-                        "example": [
-                            {
-                                "currencyCode": "EUR",
-                                "total": 1500
-                            },
-                            {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        ]
-                    },
-                    "withdrawals": {
-                        "description": "Per-currency withdrawal totals, sorted ascending by currency code. Transfer rows are excluded",
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "currencyCode": {
-                                    "description": "Currency code (ISO 4217)",
-                                    "type": "string",
-                                    "example": "USD"
-                                },
-                                "total": {
-                                    "description": "Total amount for this currency",
-                                    "type": "number",
-                                    "format": "float",
-                                    "example": 320.5
-                                }
-                            },
-                            "type": "object",
-                            "example": {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        },
-                        "example": [
-                            {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        ]
+                        "example": null,
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -9747,10 +9920,21 @@
                         "example": 123,
                         "nullable": true
                     },
+                    "type": {
+                        "description": "The import type. Determines the data field schema and which of accountId/assetId applies",
+                        "type": "string",
+                        "example": "transaction"
+                    },
                     "accountId": {
-                        "description": "The destination account ID",
+                        "description": "The destination account ID. Only valid when type requires an account",
                         "type": "integer",
                         "example": 456,
+                        "nullable": true
+                    },
+                    "assetId": {
+                        "description": "The target asset ID. Only valid when type requires an asset",
+                        "type": "integer",
+                        "example": 5432,
                         "nullable": true
                     },
                     "status": {
@@ -9810,7 +9994,7 @@
             },
             "ImportRowDTO": {
                 "title": "ImportRowDTO",
-                "description": "Data Transfer Object for a single parsed row within an import session",
+                "description": "Abstract base for a single parsed row within an import session. Common fields shared by every ImportSessionType.",
                 "properties": {
                     "index": {
                         "description": "The zero-based position of this row in the original CSV",
@@ -9821,93 +10005,26 @@
                         "description": "The original raw string values from the CSV for this row",
                         "type": "array",
                         "items": {
-                            "description": "Raw value from one CSV column",
-                            "type": "string",
-                            "example": "2026-01-15"
+                            "type": "string"
                         },
                         "example": [
                             "2026-01-15",
-                            "Salary",
-                            "5000.00"
+                            "100.00",
+                            "Salary"
                         ]
-                    },
-                    "date": {
-                        "description": "The parsed date in Y-m-d format; null if unmapped or parse error",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2026-01-15",
-                        "nullable": true
-                    },
-                    "description": {
-                        "description": "The transaction description; null if unmapped",
-                        "type": "string",
-                        "example": "Salary deposit",
-                        "nullable": true
-                    },
-                    "amount": {
-                        "description": "The signed amount (negative = withdrawal); null if unmapped or parse error",
-                        "type": "number",
-                        "format": "float",
-                        "example": 5000,
-                        "nullable": true
-                    },
-                    "type": {
-                        "description": "The resolved transaction direction: 'deposit' or 'withdrawal'",
-                        "type": "string",
-                        "example": "deposit",
-                        "nullable": true
-                    },
-                    "currencyCode": {
-                        "description": "The resolved ISO 4217 currency code for this transaction row",
-                        "type": "string",
-                        "example": "AUD"
-                    },
-                    "categoryId": {
-                        "description": "The assigned category ID; null if not categorised",
-                        "type": "integer",
-                        "example": 7,
-                        "nullable": true
-                    },
-                    "notes": {
-                        "description": "Optional user notes for the transaction",
-                        "type": "string",
-                        "example": "Monthly salary",
-                        "nullable": true
-                    },
-                    "externalId": {
-                        "description": "The external reference ID from the source bank (used for deduplication)",
-                        "type": "string",
-                        "example": "TXN-987654",
-                        "nullable": true
-                    },
-                    "transferAccountId": {
-                        "description": "The ID of the counterpart account for this transfer row",
-                        "type": "integer",
-                        "example": 42,
-                        "nullable": true
                     },
                     "status": {
                         "description": "The validation status of this row",
                         "type": "string",
                         "example": "ready"
                     },
-                    "isDuplicateTransfer": {
-                        "description": "Whether this row's transfer designation exactly matches an existing linked pair",
-                        "type": "boolean",
-                        "example": false
-                    },
-                    "isDuplicateTransferOverridden": {
-                        "description": "Whether the user has explicitly overridden the duplicate transfer auto-exclusion",
-                        "type": "boolean",
-                        "example": false
-                    },
                     "errors": {
-                        "description": "Field-keyed structured validation errors",
+                        "description": "Field-keyed structured validation errors in the ValidationError wire format",
                         "type": "object",
                         "example": {
                             "amount": [
                                 {
-                                    "code": "invalid_format",
+                                    "code": "invalid_number",
                                     "params": []
                                 }
                             ]
@@ -9917,12 +10034,12 @@
                             "items": {
                                 "properties": {
                                     "code": {
-                                        "type": "string",
-                                        "example": "invalid_format"
+                                        "description": "array<int, array{code: string, params: array<string, mixed>}>> Field-keyed structured validation errors",
+                                        "type": "string"
                                     },
                                     "params": {
-                                        "type": "object",
-                                        "additionalProperties": true
+                                        "description": "array<int, array{code: string, params: array<string, mixed>}>> Field-keyed structured validation errors",
+                                        "type": "object"
                                     }
                                 },
                                 "type": "object"
@@ -9932,7 +10049,7 @@
                     "commitError": {
                         "description": "Human-readable error message set when this row caused a commit to fail",
                         "type": "string",
-                        "example": "Duplicate transaction detected",
+                        "example": null,
                         "nullable": true
                     }
                 },
@@ -10385,6 +10502,162 @@
                 },
                 "type": "object"
             },
+            "TransactionImportCommitResponseDTO": {
+                "title": "TransactionImportCommitResponseDTO",
+                "description": "Data Transfer Object for a transaction import commit response",
+                "properties": {
+                    "transferCount": {
+                        "description": "The number of transfer pairs created or linked during this commit",
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "deposits": {
+                        "description": "Per-currency deposit totals, sorted ascending by currency code. Transfer rows are excluded",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "currencyCode": {
+                                    "description": "Currency code (ISO 4217)",
+                                    "type": "string",
+                                    "example": "EUR"
+                                },
+                                "total": {
+                                    "description": "Total amount for this currency",
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 1500
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "currencyCode": "EUR",
+                                "total": 1500
+                            }
+                        },
+                        "example": [
+                            {
+                                "currencyCode": "EUR",
+                                "total": 1500
+                            },
+                            {
+                                "currencyCode": "USD",
+                                "total": 320.5
+                            }
+                        ]
+                    },
+                    "withdrawals": {
+                        "description": "Per-currency withdrawal totals, sorted ascending by currency code. Transfer rows are excluded",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "currencyCode": {
+                                    "description": "Currency code (ISO 4217)",
+                                    "type": "string",
+                                    "example": "USD"
+                                },
+                                "total": {
+                                    "description": "Total amount for this currency",
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 320.5
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "currencyCode": "USD",
+                                "total": 320.5
+                            }
+                        },
+                        "example": [
+                            {
+                                "currencyCode": "USD",
+                                "total": 320.5
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionImportRowDTO": {
+                "title": "TransactionImportRowDTO",
+                "description": "Data Transfer Object for a single parsed row within a transaction import session",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportRowDTO"
+                    },
+                    {
+                        "properties": {
+                            "date": {
+                                "description": "The parsed date in Y-m-d format; null if unmapped or parse error",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2026-01-15",
+                                "nullable": true
+                            },
+                            "description": {
+                                "description": "The transaction description; null if unmapped",
+                                "type": "string",
+                                "example": "Salary deposit",
+                                "nullable": true
+                            },
+                            "amount": {
+                                "description": "The signed amount (negative = withdrawal); null if unmapped or parse error",
+                                "type": "number",
+                                "format": "float",
+                                "example": 5000,
+                                "nullable": true
+                            },
+                            "type": {
+                                "description": "The resolved transaction direction: 'deposit' or 'withdrawal'",
+                                "type": "string",
+                                "example": "deposit",
+                                "nullable": true
+                            },
+                            "currencyCode": {
+                                "description": "The resolved ISO 4217 currency code for this transaction row",
+                                "type": "string",
+                                "example": "AUD"
+                            },
+                            "categoryId": {
+                                "description": "The assigned category ID; null if not categorised",
+                                "type": "integer",
+                                "example": 7,
+                                "nullable": true
+                            },
+                            "notes": {
+                                "description": "Optional user notes for the transaction",
+                                "type": "string",
+                                "example": "Monthly salary",
+                                "nullable": true
+                            },
+                            "externalId": {
+                                "description": "The external reference ID from the source bank (used for deduplication)",
+                                "type": "string",
+                                "example": "TXN-987654",
+                                "nullable": true
+                            },
+                            "transferAccountId": {
+                                "description": "The ID of the counterpart account for this transfer row",
+                                "type": "integer",
+                                "example": 42,
+                                "nullable": true
+                            },
+                            "isDuplicateTransfer": {
+                                "description": "Whether this row's transfer designation exactly matches an existing linked pair",
+                                "type": "boolean",
+                                "example": false
+                            },
+                            "isDuplicateTransferOverridden": {
+                                "description": "Whether the user has explicitly overridden the duplicate transfer auto-exclusion",
+                                "type": "boolean",
+                                "example": false
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
             "TransactionResponseDTO": {
                 "title": "TransactionResponseDTO",
                 "description": "Data Transfer Object for transaction responses",
@@ -10747,6 +11020,18 @@
                 ],
                 "example": ","
             },
+            "ImportFieldDataType": {
+                "description": "The data type of a mappable import field, used for generic CSV coercion and validation.",
+                "type": "string",
+                "enum": [
+                    "date",
+                    "decimal",
+                    "string",
+                    "integer",
+                    "enum"
+                ],
+                "example": "decimal"
+            },
             "ImportRowStatus": {
                 "description": "Validation status of an individual import row.",
                 "type": "string",
@@ -10767,6 +11052,17 @@
                     "failed"
                 ],
                 "example": "draft"
+            },
+            "ImportSessionType": {
+                "description": "Import session type identifier. Determines the data field schema, row validation rules, and which target column (accountId or assetId) applies to the session.",
+                "type": "string",
+                "enum": [
+                    "accountTransaction",
+                    "assetValueHistory",
+                    "category",
+                    "investmentTransaction"
+                ],
+                "example": "transaction"
             },
             "ReturnMethod": {
                 "description": "Investment return calculation method (HPR, TWR, or MWR/IRR).",

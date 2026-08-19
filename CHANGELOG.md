@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.0] - 2026.08.19
+
+### New Features
+- **Bulk Asset Valuation Import:** Quickly and easily import tens of thousands of asset valuation records using standard CSV files and the now upgraded import wizard.
+- **Bulk Category Import:** Quickly and easily import categories using standard CSV files and the now upgraded import wizard.
+- Client: Added bulk deleting to `AssetValueHistoryTable`
+- Client: Added bulk deleting to `CategoryTable`
+
+### Changed
+- Client: Updated `TransactionTable` so that when an accounts transactions are exported via the "Export -> Download as CSV" button, it now includes the transactions currency
+- Client: Updated `AssetValueHistoryTable` so that when asset valuations are exported via the "Export -> Download as CSV" button, it now includes the valuations currency
+
+### Fixed
+- Client: Fixed `TransactionTable` so that when an accounts transactions are exported via the "Export -> Download as CSV" button, the category column now properly exports the categories name
+- Client: Fixed a bug in the Dashboard page Assets total amount value, which wasn't properly excluding assets from accounts that have their status set to "Excluded" or "Closed"
+- Client: Fixed a bug where all account historical charts `/finances/accounts/{id}/history`, and all asset position historical charts `/finances/assets/{id}/position-history` would start on the 1st of Jan, 1970 when queried with the "Max" time period scale
+- Server: Updated `AccountController::getAccountTransactions` to stream the response. This allows accounts with thousands of transactions to stream them and not exhaust the memory limits of the server, increasing support for accounts with 50,000+ transactions
+- Server: Updated the `AuthMiddleware` validation to be more robust
+- Server: Updated the `AuthController::signout` validation to be more robust
+
+### Security
+- Client: Updated `node` from `26.3.1` to `26.7.0`
+- Client: Updated `@mui/material` from `9.1.0` to `9.3.1`
+- Client: Updated `@mui/x-charts` from `9.6.0` to `9.11.1`
+- Client: Updated `@mui/x-data-grid` from `9.6.0` to `9.11.0`
+- Client: Updated `@mui/x-date-pickers` from `9.6.0` to `9.11.0`
+- Server: Added additional `escapeshellart()` security to `ApplicationBackupRepository` to ensure consistency and enhance security during create and restore operations
+
 ## [v1.2.4] - 2026.06.09
 
 > Comprehensive new API documentation, stability and security enhancements
