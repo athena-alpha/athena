@@ -7,7 +7,7 @@
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
         },
-        "version": "1.3.1"
+        "version": "1.4.0"
     },
     "servers": [
         {
@@ -9206,40 +9206,48 @@
             "AssetValueHistoryImportCommitResponseDTO": {
                 "title": "AssetValueHistoryImportCommitResponseDTO",
                 "description": "Data Transfer Object for an asset value history import commit response",
-                "properties": {
-                    "assetId": {
-                        "description": "The ID of the finance_asset these valuations were imported into",
-                        "type": "integer",
-                        "example": 5432
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportCommitResponseDTO"
                     },
-                    "dateRangeStart": {
-                        "description": "The earliest valuation date imported in this commit",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-01-01",
-                        "nullable": true
-                    },
-                    "dateRangeEnd": {
-                        "description": "The latest valuation date imported in this commit",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2026-06-01",
-                        "nullable": true
-                    },
-                    "latestValue": {
-                        "description": "The value recorded on dateRangeEnd, in the asset's own currency",
-                        "type": "number",
-                        "format": "float",
-                        "example": 450000,
-                        "nullable": true
-                    },
-                    "currencyCode": {
-                        "description": "The ISO 4217 currency code the asset (and latestValue) is denominated in",
-                        "type": "string",
-                        "example": "AUD"
+                    {
+                        "properties": {
+                            "assetId": {
+                                "description": "The ID of the finance_asset these valuations were imported into",
+                                "type": "integer",
+                                "example": 5432
+                            },
+                            "dateRangeStart": {
+                                "description": "The earliest valuation date imported in this commit",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2024-01-01",
+                                "nullable": true
+                            },
+                            "dateRangeEnd": {
+                                "description": "The latest valuation date imported in this commit",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2026-06-01",
+                                "nullable": true
+                            },
+                            "latestValue": {
+                                "description": "The value recorded on dateRangeEnd, in the asset's own currency",
+                                "type": "number",
+                                "format": "float",
+                                "example": 450000,
+                                "nullable": true
+                            },
+                            "currencyCode": {
+                                "description": "The ISO 4217 currency code the asset (and latestValue) is denominated in",
+                                "type": "string",
+                                "example": "AUD"
+                            }
+                        },
+                        "type": "object"
                     }
-                },
-                "type": "object"
+                ]
             },
             "AssetValueHistoryImportRowDTO": {
                 "title": "AssetValueHistoryImportRowDTO",
@@ -9519,19 +9527,27 @@
             "CategoryImportCommitResponseDTO": {
                 "title": "CategoryImportCommitResponseDTO",
                 "description": "Data Transfer Object for a category import commit response",
-                "properties": {
-                    "incomeCount": {
-                        "description": "The number of 'income' type categories created in this commit",
-                        "type": "integer",
-                        "example": 3
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportCommitResponseDTO"
                     },
-                    "expenseCount": {
-                        "description": "The number of 'expense' type categories created in this commit",
-                        "type": "integer",
-                        "example": 12
+                    {
+                        "properties": {
+                            "incomeCount": {
+                                "description": "The number of \\'income\\' type categories created in this commit",
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "expenseCount": {
+                                "description": "The number of \\'expense\\' type categories created in this commit",
+                                "type": "integer",
+                                "example": 12
+                            }
+                        },
+                        "type": "object"
                     }
-                },
-                "type": "object"
+                ]
             },
             "CategoryImportRowDTO": {
                 "title": "CategoryImportRowDTO",
@@ -9825,6 +9841,23 @@
                 },
                 "type": "object"
             },
+            "ImportCommitResponseDTO": {
+                "title": "ImportCommitResponseDTO",
+                "description": "Abstract base for an import commit response containing common import summary fields",
+                "properties": {
+                    "importedCount": {
+                        "description": "The number of rows successfully committed as domain records",
+                        "type": "integer",
+                        "example": 95
+                    },
+                    "skippedCount": {
+                        "description": "The number of rows skipped (status was error or excluded)",
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
             "ImportFieldResponseDTO": {
                 "title": "ImportFieldResponseDTO",
                 "description": "Data Transfer Object describing a single mappable CSV field for an import session's type",
@@ -10034,11 +10067,11 @@
                             "items": {
                                 "properties": {
                                     "code": {
-                                        "description": "array<int, array{code: string, params: array<string, mixed>}>> Field-keyed structured validation errors",
+                                        "description": "array<int, array{code: string, params: array<string, mixed>}>>",
                                         "type": "string"
                                     },
                                     "params": {
-                                        "description": "array<int, array{code: string, params: array<string, mixed>}>> Field-keyed structured validation errors",
+                                        "description": "array<int, array{code: string, params: array<string, mixed>}>>",
                                         "type": "object"
                                     }
                                 },
@@ -10505,78 +10538,86 @@
             "TransactionImportCommitResponseDTO": {
                 "title": "TransactionImportCommitResponseDTO",
                 "description": "Data Transfer Object for a transaction import commit response",
-                "properties": {
-                    "transferCount": {
-                        "description": "The number of transfer pairs created or linked during this commit",
-                        "type": "integer",
-                        "example": 45
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ImportCommitResponseDTO"
                     },
-                    "deposits": {
-                        "description": "Per-currency deposit totals, sorted ascending by currency code. Transfer rows are excluded",
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "currencyCode": {
-                                    "description": "Currency code (ISO 4217)",
-                                    "type": "string",
-                                    "example": "EUR"
-                                },
-                                "total": {
-                                    "description": "Total amount for this currency",
-                                    "type": "number",
-                                    "format": "float",
-                                    "example": 1500
-                                }
+                    {
+                        "properties": {
+                            "transferCount": {
+                                "description": "The number of transfer pairs created or linked during this commit",
+                                "type": "integer",
+                                "example": 45
                             },
-                            "type": "object",
-                            "example": {
-                                "currencyCode": "EUR",
-                                "total": 1500
+                            "deposits": {
+                                "description": "Per-currency deposit totals, sorted ascending by currency code. Transfer rows are excluded",
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "currencyCode": {
+                                            "description": "Currency code (ISO 4217)",
+                                            "type": "string",
+                                            "example": "EUR"
+                                        },
+                                        "total": {
+                                            "description": "Total amount for this currency",
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 1500
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "currencyCode": "EUR",
+                                        "total": 1500
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "currencyCode": "EUR",
+                                        "total": 1500
+                                    },
+                                    {
+                                        "currencyCode": "USD",
+                                        "total": 320.5
+                                    }
+                                ]
+                            },
+                            "withdrawals": {
+                                "description": "Per-currency withdrawal totals, sorted ascending by currency code. Transfer rows are excluded",
+                                "type": "array",
+                                "items": {
+                                    "properties": {
+                                        "currencyCode": {
+                                            "description": "Currency code (ISO 4217)",
+                                            "type": "string",
+                                            "example": "USD"
+                                        },
+                                        "total": {
+                                            "description": "Total amount for this currency",
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 320.5
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "currencyCode": "USD",
+                                        "total": 320.5
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "currencyCode": "USD",
+                                        "total": 320.5
+                                    }
+                                ]
                             }
                         },
-                        "example": [
-                            {
-                                "currencyCode": "EUR",
-                                "total": 1500
-                            },
-                            {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        ]
-                    },
-                    "withdrawals": {
-                        "description": "Per-currency withdrawal totals, sorted ascending by currency code. Transfer rows are excluded",
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "currencyCode": {
-                                    "description": "Currency code (ISO 4217)",
-                                    "type": "string",
-                                    "example": "USD"
-                                },
-                                "total": {
-                                    "description": "Total amount for this currency",
-                                    "type": "number",
-                                    "format": "float",
-                                    "example": 320.5
-                                }
-                            },
-                            "type": "object",
-                            "example": {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        },
-                        "example": [
-                            {
-                                "currencyCode": "USD",
-                                "total": 320.5
-                            }
-                        ]
+                        "type": "object"
                     }
-                },
-                "type": "object"
+                ]
             },
             "TransactionImportRowDTO": {
                 "title": "TransactionImportRowDTO",

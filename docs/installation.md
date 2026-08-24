@@ -159,7 +159,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:4096 \
 
 ## Changing Ports
 If you'd like to change the default `443` port (HTTPS) that the Client interface is served on, simply update the [docker-compose.yml](../docker-compose.yml) file.
-- Undere the `Nginx -> Ports` area, change the first `443` number to whatever valid port you wish
+- Under the `Nginx -> Ports` area, change the first `443` number to whatever valid port you wish
 ```yaml
 nginx:
     image: nginx:latest

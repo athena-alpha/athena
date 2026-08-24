@@ -103,7 +103,7 @@ We adhere to the latest, industry-leading privacy and security standards, drawin
 - Third party dependencies are minimized and kept up to date to ensure they are patched for the latest security updates
 - Commonly known dangerous functions are avoided to ensure they can’t be used in attacks
 - Regular expressions are used sparingly and fully reviewed to ensure mitigation against ReDoS attacks
-- All code is developed to strict ESlint linting standards for increased security and code legibility
+- All code is developed to strict ESLint linting standards for increased security and code legibility
 - All code is developed using strict type checking to enhance code quality and reduce errors
 - All code is developed using ECMAScript version ES2022, ensuring unsafe and dangerous legacy features aren’t used
 - Dependencies are regularly scanned for vulnerabilities using tools like `npm audit` and updated promptly

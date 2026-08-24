@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.0] - 2026.08.25
+
+### Fixed
+- Docs: Fixed multiple spelling and grammar errors in various document files
+- Server: All server code now passes PHPStan analyse level 6, fixing 293 errors spanning multiple files for increased stability
+- Database: Fixed a database error that was causing new "buy" transactions to fail. This was fixed by loosening the tolerance on the `ck_finance_transaction_amount_total` check for the `finance_transaction` table
+
+### Security
+- Client: Updated `i18next` from `26.3.1` to `26.4.0`
+- Client: Updated `@mui/x-charts` from `9.11.1` to `9.12.0`
+- Client: Updated `@mui/x-data-grid` from `9.11.0` to `9.12.0`
+- Client: Updated `@mui/x-date-pickers` from `9.11.0` to `9.12.0`
+- Server: Fixed the `password_hash` configuration for user passwords, which was incorrectly using the array keys `memoryCost`/`timeCost` instead of PHP's required `memory_cost`/`time_cost`. As a result, passwords were being hashed with PHP's default Argon2id memory cost (64 MB) instead of the intended, stronger 128 MB. Existing password hashes are automatically re-hashed with the correct parameters the next time each affected user signs in, no manual action is required
+- Server: Authorization refresh tokens are now stored as Argon2id hashes (`password_hash`/`password_verify`) rather than in plaintext, so a compromised database can no longer be used to directly impersonate a session. **Note: This changes the stored token format and will invalidate all existing sessions on upgrade, meaning that every user will need to sign in again after upgrading**
+
 ## [v1.3.1] - 2026.08.19
 
 ### Fixed
@@ -33,7 +48,7 @@ All notable changes to this project will be documented in this file. The format 
 - Client: Updated `@mui/x-charts` from `9.6.0` to `9.11.1`
 - Client: Updated `@mui/x-data-grid` from `9.6.0` to `9.11.0`
 - Client: Updated `@mui/x-date-pickers` from `9.6.0` to `9.11.0`
-- Server: Added additional `escapeshellart()` security to `ApplicationBackupRepository` to ensure consistency and enhance security during create and restore operations
+- Server: Added additional `escapeshellarg()` security to `ApplicationBackupRepository` to ensure consistency and enhance security during create and restore operations
 
 ## [v1.2.4] - 2026.06.09
 
@@ -100,7 +115,7 @@ All notable changes to this project will be documented in this file. The format 
 - Client: Added `DateFormatPicker` and `TimeFormatPicker` components to Settings -> Preferences -> Localization to allow the user to set their own custom date and time formats application wide.
 - Client: Added many new components to support the new Finance -> Accounts, Assets, Categories, Market Data, Symbols and Transaction features.
 - Client: Added new components to enable a centralized and standard way of displaying monetary amounts and financial returns application wide. This also includes a conversion tooltip that appears when the currency doesn't match the users display currency, giving exchange rate, date and source information.
-- Client: Added `StackedBarChart` component to display 100% stacked bar charts system wide with support for dynamic data, titles, icons, data formating and display options.
+- Client: Added `StackedBarChart` component to display 100% stacked bar charts system wide with support for dynamic data, titles, icons, data formatting and display options.
 - Client: Added `BaseLineChart` component to display beautiful and adaptive line charts system wide with support for dynamic data and Y-axis auto adjusting options.
 - Client: Added Tooltips to all `IconButton` components.
 - Client: Added localization support to `formatFileSize`.
@@ -199,9 +214,9 @@ All notable changes to this project will be documented in this file. The format 
 - Changed Server entry point script to now support upgrading of the database when new versions are deployed.
 
 ### Removed
-- Removed AI Prompts, this is now fully manged by the AI and reduces code overhead.
-- Removed AI Output Length, this is now fully manged by the AI and reduces code overhead.
-- Removed AI Prompt Suggestions, this is now fully manged by the AI and reduces code overhead.
+- Removed AI Prompts, this is now fully managed by the AI and reduces code overhead.
+- Removed AI Output Length, this is now fully managed by the AI and reduces code overhead.
+- Removed AI Prompt Suggestions, this is now fully managed by the AI and reduces code overhead.
 
 ### Security
 - Updated `i18next` to version 25.6.0

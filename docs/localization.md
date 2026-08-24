@@ -64,7 +64,7 @@ Translation files are located in the below directories:
 
 On the Client side there are different JSON files in each domains i18n folder. One is the `domains/common/i18n/en-US.json` translation file for all `common` functions (e.g., buttons, date, time, units etc), the others are for each domain such as `domains/finance/i18n/en-US.json` or `domains/user/i18n/en-US.json`. These only contain translations specific to that domain
 
-The server only has a single `core.en.php` translation file for each languge
+The server only has a single `core.en.php` translation file for each language
 
 ```
 .
@@ -92,7 +92,7 @@ The server only has a single `core.en.php` translation file for each languge
 ## Internationalization Usage
 There are a number of built in utility functions to support easily displaying common things that fully support internationalization.
 
-### Formating Date & Time
+### Formatting Date & Time
 When using [formatDate](https://github.com/athena-alpha/athena-client/blob/main/src/domains/common/utils/dateTime.utils.ts), [formatTime](https://github.com/athena-alpha/athena-client/blob/main/src/domains/common/utils/dateTime.utils.ts) and [formatDateTime](https://github.com/athena-alpha/athena-client/blob/main/src/domains/common/utils/dateTime.utils.ts), make sure you include the users personal preferences via `user`.
 
 ```typescript
