@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.0] - 2026.09.18
+
+### New Features
+- **Vanguard (AU) Managed Funds Data Provider:** Vanguard Australia's unlisted managed funds are now fully supported in the Finance app as a second financial data provider alongside Yahoo Finance, with each symbol now tracking its originating data provider
+- **AI Chat Context Chips & Unified Data Inclusion:** The AI Chat input area now displays inline chips for any private data included in a message. Users can attach context data via the new `+` button, `@`/`#` triggers, or the built-in quick search. Supported resources range from broad objects (e.g., an entire financial account) and filtered aggregates (e.g., category breakdowns or cash-flow history over a chosen period) to individual profile fields (e.g., height, age, occupation). This replaces the previous profile-only button and is architected to expand cleanly as new apps are added in the future
+- **AI Finance Data Context:** Finance data can now be included directly in AI chats through the `+` button or `@`/`#` triggers. Available resources cover object-level items (accounts, assets) and aggregates (net worth, asset allocation, debt summary, cash flow history/summary, category breakdown, and transaction summary with period, account, category, and type filters). Note: To enhance security, the `account number` as well as `notes` and `metadata` from both assets and accounts are stripped before the data is passed to the AI
+- **PHPUnit Integration Test Suite:** Added a full PHPUnit integration test harness under `athena-server/tests/` covering all domains. With 383 tests and 2,853 assertions, it simulates API requests to the server's endpoints, verifies responses, database state and exceptions to increase stability, security and future maintainability. Tests run against the dedicated `db-test` MariaDB service and can be executed inside the server container using `vendor/bin/phpunit --testdox --display-warnings`
+- Client: All AI chats now have additional user settings automatically injected into them so any AI responses are given using your personal preferences including time/date format, units, currency and language
+
+### Changed
+- Server: Relaxed the `php-hardened.ini` `disable_functions` list so required functions (`mkdir`, `rmdir`, `rename`, `chdir`, `putenv`) remain available for PHPUnit and normal application operation
+- Server: Updated `athena-server/Dockerfile` and `.gitignore` files to ensure `env.test` and the `tests/` directory are available in development images when `INSTALL_DEV=true` so the new test suite can run inside the container
+- Server: Updated `AuthController::signin` so that if `mfaCode` isn't supplied, the code provides `null` to `AuthService::signin`
+- Database: Updated the `finance_symbol` table to include a new `source` column so multiple finance data providers can be supported
+
+### Fixed
+- Server: Fixed all scheduled background scripts that were silently failing to run due to the application bootstrap being migrated from `/var/www/bootstrap.php` to the new `/var/www/bootstrap/app.php` multi-file structure
+- Server: Fixed the `$env` variable in the main `Config.php` file, which wasn't reading the correctly resolved `$envFile`
+- Server: Fixed `AiPersonaRepository::save` so that `isSystem` and `isPublic` are now explicitly cast with `(int)` before being passed to the database. This ensures `INSERT` and `UPDATE` queries properly convert the PHP boolean to `1/0` prior to binding, instead of relying on PDO's default (and unreliable) string coercion of booleans
+- Server: Fixed `LogController::deleteLog` that was returning the incorrect `HttpStatus` code if it failed to find and delete a log
+- Server: Fixed `ApplicationSoftwareController::updateAppComponents` that had non-standard and incorrect data input ingestion logic
+- Server: Fixed issue where importing categories would fail if no icon was selected during step 3 of the import wizard
+- Server: Fixed `PortfolioService::getHistoryDto` that was returning incorrect `cashBalance` and `holdingsBalance` values for every `HistoryDataPointDTO`, resulting in wrong net worth history chart data
+- Server: Fixed multiple `Controller::create` functions to ensure they returned the correct `HttpStatus::CREATED` (201) status code
+
+### Security
+- Server: Updated multiple service-layer `getById` functions to combine the "resource not found" and "access to resource denied" messages. This fixes multiple resource enumeration and information disclosure issues under OWASP's Insecure Direct Object Reference (IDOR) guidance and ensures that attackers cannot query the database and learn about resources that aren't theirs
+- Client: Updated `react` from `19.2.7` to `19.3.0`
+- Client: Updated `react-dom` from `19.2.7` to `19.3.0`
+- Client: Updated `@mui/material` from `9.3.1` to `9.4.0`
+- Client: Updated `@mui/x-charts` from `9.12.0` to `9.13.0`
+- Client: Updated `@mui/x-data-grid` from `9.12.0` to `9.13.0`
+- Client: Updated `@mui/x-date-pickers` from `9.12.0` to `9.13.0`
+
 ## [v1.4.0] - 2026.08.25
 
 ### Fixed

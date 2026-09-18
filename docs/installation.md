@@ -184,7 +184,4 @@ phpmyadmin: # Web interface for direct database access
 ```
 
 2. Restart the docker compose stack and browse to [http://localhost:8080](http://localhost:8080) (note there is NO `https`)
-3. The username is `athena` and the password is shown in the Server boot up logs as it's randomly generated for each deployment. If you cannot find the password in the logs, they are stored in `/data/secrets/<file>`. It should look like:
-```
-"Generated MARIADB_PASSWORD: 123..."
-```
+3. The username is `athena`. The password is randomly generated for each deployment and stored in `/data/secrets/<file>`.
